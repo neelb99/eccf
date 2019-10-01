@@ -21,15 +21,16 @@ function makeChart(){
     var mIndex = inamplitude/caamplitude;
     inpoints = [];
     points = [];
-    for(var i=0;i<4*Math.PI;i+=0.001){
+    for(var i=0;i<2*Math.PI;i+=0.001){
         inpoints.push({x:i,y:inamplitude*Math.sin(2*Math.PI*i*infrequency)})
     }
-    for(var i=0;i<=4*Math.PI;i+=0.001){
-        var am = (caamplitude * Math.sin(2*Math.PI*cafrequency*i)) + (caamplitude * mIndex * Math.sin(2*Math.PI*cafrequency*i)) + Math.sin(2*Math.PI*infrequency*i);
+    for(var i=0;i<=2*Math.PI;i+=0.001){
+        var am = (caamplitude * Math.sin(2*Math.PI*cafrequency*i)) + (caamplitude * mIndex * Math.sin(2*Math.PI*cafrequency*i))*Math.sin(2*Math.PI*infrequency*i);
         points.push({x:i,y:am});
     }
     var chart = new CanvasJS.Chart("chartContainer", {
 	    animationEnabled: true,
+        zoomEnabled: true,
 	    theme: "light2",
 	    title:{text:"AM generation"},
 	    data: [{     
