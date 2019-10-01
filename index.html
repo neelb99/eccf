@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+<head>  
+<script>
+var points = [];
+var inpoints = [];
+var capoints = [];
+var inamplitude=1;
+var infrequency=1/6.2831853;
+var caamplitude=1;
+var cafrequency=1/6.2831853;
+window.onload = function(){
+    makeChart();
+}
+
+function makeChart(){
+    inamplitude=document.getElementById('inamp').value;
+    infrequency=document.getElementById('infre').value;
+    caamplitude=document.getElementById('caamp').value;
+    cafrequency=document.getElementById('cafre').value;
+    var mIndex = inamplitude/caamplitude;
+    for(var i=0;i<4*Math.PI;i+=0.001){
+        inpoints.push({x:i,y:inamplitude*Math.sin(2*Math.PI*i*infrequency)})
+    }
+    for(var i=0;i<=4*Math.PI;i+=0.001){
+        var am = (caamplitude * Math.sin(2*Math.PI*cafrequency*i)) + (caamplitude * mIndex * Math.sin(2*Math.PI*cafrequency*i)) + Math.sin(2*Math.PI*infrequency*i);
+        points.push({x:i,y:am});
+    }
+    var chart = new CanvasJS.Chart("chartContainer", {
+	    animationEnabled: true,
+	    theme: "light2",
+	    title:{text:"AM generation"},
+	    data: [{     
+            name:"modulated wave",   
+            showInLegend: true,
+            color:"red",
+		    type: "line",       
+		    dataPoints: points
+	    },
+        {
+            name:"information wave",
+            showInLegend: true,
+            type: "line",       
+		    dataPoints: inpoints
+        }],
+        legend:{
+            cursor: "pointer",
+            fontSize: 16,
+	    }
+    });
+    
+    chart.render();
+}
+
+
+
+function newAmp(val){
+    console.log(val);
+}
+
+// amplitude.onchange = ()=>console.log(amplitude);
+
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<center>
+<h1>Information Signal:</h1><br>
+Amplitude:<input onchange="newAmp(this.value)" id="inamp" type="number">
+Frequency:<input type="number" id="infre">
+<h1>Carrier Signal</h1><br>
+Amplitude:<input onchange="newAmp(this.value)" id="caamp" type="number">
+Frequency:<input type="number" id="cafre"><br><br>
+<button onclick="makeChart()">Make</button>
+</center>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
