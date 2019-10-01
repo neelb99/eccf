@@ -21,10 +21,10 @@ function makeChart(){
     var mIndex = inamplitude/caamplitude;
     inpoints = [];
     points = [];
-    for(var i=0;i<2*Math.PI;i+=0.001){
+    for(var i=0;i<2*Math.PI;i+=0.0001){
         inpoints.push({x:i,y:inamplitude*Math.sin(2*Math.PI*i*infrequency)})
     }
-    for(var i=0;i<=2*Math.PI;i+=0.001){
+    for(var i=0;i<=2*Math.PI;i+=0.0001){
         var am = (caamplitude * Math.sin(2*Math.PI*cafrequency*i)) + (caamplitude * mIndex * Math.sin(2*Math.PI*cafrequency*i))*Math.sin(2*Math.PI*infrequency*i);
         points.push({x:i,y:am});
     }
@@ -36,12 +36,13 @@ function makeChart(){
 	    data: [{     
             name:"modulated wave",   
             showInLegend: true,
-            color:"red",
+            color:"blue",
 		    type: "line",       
 		    dataPoints: points
 	    },
         {
             name:"information wave",
+            color:"red",
             showInLegend: true,
             type: "line",       
 		    dataPoints: inpoints
