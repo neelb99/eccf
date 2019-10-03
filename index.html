@@ -23,11 +23,11 @@ function makeChart(){
     info_points = [];
     am_points = [];
     carrier_points=[];
-    for(var i=0;i<2*Math.PI;i+=0.0001){
+    for(var i=0;i<Math.PI;i+=0.0001){
         info_points.push({x:i,y:info_amplitude*Math.sin(2*Math.PI*i*info_frequency)});
         carrier_points.push({x:i, y: carrier_amplitude*Math.sin(2*Math.PI*carrier_frequency*i)});
     }
-    for(var i=0;i<=2*Math.PI;i+=0.0001){
+    for(var i=0;i<=Math.PI;i+=0.0001){
         var am = (carrier_amplitude * Math.sin(2*Math.PI*carrier_frequency*i)) + (carrier_amplitude * mIndex * Math.sin(2*Math.PI*carrier_frequency*i))*Math.sin(2*Math.PI*info_frequency*i);
         am_points.push({x:i,y:am});
     }
@@ -37,6 +37,7 @@ function makeChart(){
 	    theme: "light2",
 	    title:{text:"Information wave"},
 	    data: [{     
+            linethickness:0,
             name:"information wave",   
             showInLegend: true,
             color:"blue",
@@ -50,10 +51,12 @@ function makeChart(){
     });
 
     var carrier_chart = new CanvasJS.Chart("chartContainer2", {
+        zoomEnabled:true,
 	    animationEnabled: true,
 	    theme: "light2",
 	    title:{text:"Carrier Wave"},
-	    data: [{     
+	    data: [{  
+            linethickness:0,   
             name:"Carrier wave",   
             showInLegend: true,
             color:"blue",
@@ -71,6 +74,7 @@ function makeChart(){
 	    theme: "light2",
 	    title:{text:"Modulated Wave"},
 	    data: [{     
+            linethickness:0,
             name:"modulated wave",   
             showInLegend: true,
             color:"blue",
@@ -100,10 +104,10 @@ function makeChart(){
 <center>
 <h1>Information Signal:</h1><br>
 Amplitude:<input id="inamp" type="number">
-Frequency:<input type="number" id="infre">
+Frequency(in KHz):<input type="number" id="infre">
 <h1>Carrier Signal</h1><br>
 Amplitude:<input id="caamp" type="number">
-Frequency:<input type="number" id="cafre"><br><br>
+Frequency(in KHz):<input type="number" id="cafre"><br><br>
 <button onclick="makeChart()">Make</button>
 </center>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
