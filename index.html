@@ -2,78 +2,107 @@
 <html>
 <head>  
 <script>
-var points = [];
-var inpoints = [];
-var capoints = [];
-var inamplitude=1;
-var infrequency=1/6.2831853;
-var caamplitude=1;
-var cafrequency=1/6.2831853;
+var am_points = [];
+var fm_points = [];
+var info_points = [];
+var carrier_points = [];
+var info_amplitude=1;
+var info_frequency=1/6.2831853;
+var carrier_amplitude=1;
+var carrier_frequency=1/6.2831853;
 window.onload = function(){
     makeChart();
 }
 
 function makeChart(){
-    inamplitude=document.getElementById('inamp').value;
-    infrequency=document.getElementById('infre').value;
-    caamplitude=document.getElementById('caamp').value;
-    cafrequency=document.getElementById('cafre').value;
-    var mIndex = inamplitude/caamplitude;
-    inpoints = [];
-    points = [];
+    info_amplitude=document.getElementById('inamp').value;
+    info_frequency=document.getElementById('infre').value;
+    carrier_amplitude=document.getElementById('caamp').value;
+    carrier_frequency=document.getElementById('cafre').value;
+    var mIndex = info_amplitude/carrier_amplitude;
+    info_points = [];
+    am_points = [];
+    carrier_points=[];
     for(var i=0;i<2*Math.PI;i+=0.0001){
-        inpoints.push({x:i,y:inamplitude*Math.sin(2*Math.PI*i*infrequency)})
+        info_points.push({x:i,y:info_amplitude*Math.sin(2*Math.PI*i*info_frequency)});
+        carrier_points.push({x:i, y: carrier_amplitude*Math.sin(2*Math.PI*carrier_frequency*i)})
     }
     for(var i=0;i<=2*Math.PI;i+=0.0001){
-        var am = (caamplitude * Math.sin(2*Math.PI*cafrequency*i)) + (caamplitude * mIndex * Math.sin(2*Math.PI*cafrequency*i))*Math.sin(2*Math.PI*infrequency*i);
-        points.push({x:i,y:am});
+        var am = (carrier_amplitude * Math.sin(2*Math.PI*carrier_frequency*i)) + (carrier_amplitude * mIndex * Math.sin(2*Math.PI*carrier_frequency*i))*Math.sin(2*Math.PI*info_frequency*i);
+        am_points.push({x:i,y:am});
     }
-    var chart = new CanvasJS.Chart("chartContainer", {
+
+    var info_chart = new CanvasJS.Chart("chartContainer1", {
 	    animationEnabled: true,
-        zoomEnabled: true,
 	    theme: "light2",
-	    title:{text:"AM generation"},
+	    title:{text:"Information wave"},
 	    data: [{     
-            name:"modulated wave",   
+            name:"information wave",   
             showInLegend: true,
             color:"blue",
 		    type: "line",       
-		    dataPoints: points
-	    },
-        {
-            name:"information wave",
-            color:"red",
-            showInLegend: true,
-            type: "line",       
-		    dataPoints: inpoints
-        }],
+		    dataPoints: info_points
+	    }],
         legend:{
             cursor: "pointer",
             fontSize: 16,
 	    }
     });
+
+    var carrier_chart = new CanvasJS.Chart("chartContainer2", {
+	    animationEnabled: true,
+	    theme: "light2",
+	    title:{text:"Carrier Wave"},
+	    data: [{     
+            name:"Carrier wave",   
+            showInLegend: true,
+            color:"blue",
+		    type: "line",       
+		    dataPoints: fm_points
+	    }],
+        legend:{
+            cursor: "pointer",
+            fontSize: 16,
+	    }
+    });
+
+    var am_chart = new CanvasJS.Chart("chartContainer3", {
+	    animationEnabled: true,
+	    theme: "light2",
+	    title:{text:"Modulated Wave"},
+	    data: [{     
+            name:"modulated wave",   
+            showInLegend: true,
+            color:"blue",
+		    type: "line",       
+		    dataPoints: am_points
+	    }],
+        legend:{
+            cursor: "pointer",
+            fontSize: 16,
+	    }
+    });
+
     
-    chart.render();
+    info_chart.render();
+    carrier_chart.render();
+    am_chart.render();
 }
 
 
-
-function newAmp(val){
-    console.log(val);
-}
-
-// amplitude.onchange = ()=>console.log(amplitude);
 
 </script>
 </head>
 <body>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<div id="chartContainer1" style="height: 300px; width: 100%;"></div><br><br>
+<div id="chartContainer2" style="height: 300px; width: 100%;"></div><br><br>
+<div id="chartContainer3" style="height: 300px; width: 100%;"></div><br><br>
 <center>
 <h1>Information Signal:</h1><br>
-Amplitude:<input onchange="newAmp(this.value)" id="inamp" type="number">
+Amplitude:<input id="inamp" type="number">
 Frequency:<input type="number" id="infre">
 <h1>Carrier Signal</h1><br>
-Amplitude:<input onchange="newAmp(this.value)" id="caamp" type="number">
+Amplitude:<input id="caamp" type="number">
 Frequency:<input type="number" id="cafre"><br><br>
 <button onclick="makeChart()">Make</button>
 </center>
