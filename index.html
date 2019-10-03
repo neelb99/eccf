@@ -3,7 +3,6 @@
 <head>  
 <script>
 var am_points = [];
-var fm_points = [];
 var info_points = [];
 var carrier_points = [];
 var info_amplitude=1;
@@ -25,7 +24,7 @@ function makeChart(){
     carrier_points=[];
     for(var i=0;i<2*Math.PI;i+=0.0001){
         info_points.push({x:i,y:info_amplitude*Math.sin(2*Math.PI*i*info_frequency)});
-        carrier_points.push({x:i, y: carrier_amplitude*Math.sin(2*Math.PI*carrier_frequency*i)})
+        carrier_points.push({x:i, y: carrier_amplitude*Math.sin(2*Math.PI*carrier_frequency*i)});
     }
     for(var i=0;i<=2*Math.PI;i+=0.0001){
         var am = (carrier_amplitude * Math.sin(2*Math.PI*carrier_frequency*i)) + (carrier_amplitude * mIndex * Math.sin(2*Math.PI*carrier_frequency*i))*Math.sin(2*Math.PI*info_frequency*i);
@@ -58,7 +57,7 @@ function makeChart(){
             showInLegend: true,
             color:"blue",
 		    type: "line",       
-		    dataPoints: fm_points
+		    dataPoints: carrier_points
 	    }],
         legend:{
             cursor: "pointer",
